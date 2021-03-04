@@ -47,3 +47,13 @@ https://drive.google.com/file/d/1tX4wDW3gqQcvN1Qo2QOZb0INdwXLymgS/view?usp=shari
 
 **More details are coming soon**
 
+## Bibtex
+
+```
+@inproceedings{fu2021auto,
+      title={Auto-exposure Fusion for Single-image Shadow Removal}, 
+      author={Lan Fu and Changqing Zhou and Qing Guo and Felix Juefei-Xu and Hongkai Yu and Wei Feng and Song Wang},
+      year={2021},
+      booktitle={accepted to CVPR}
+}
+```
