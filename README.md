@@ -1,5 +1,5 @@
 # Auto-exposure fusion for single-image shadow removal
-We propose a new method for effective shadow removal by regarding it as an exposure fusion problem.
+We propose a new method for effective shadow removal by regarding it as an exposure fusion problem. Please refer to the paper for details: https://arxiv.org/abs/2103.01255
 
 ![Framework](./images/framework.png)
 
