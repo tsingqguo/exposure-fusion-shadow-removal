@@ -44,7 +44,8 @@ The results reported in the paper are calculated by the `matlab` script used in 
 The testing results on dataset ISTD+ is:
 https://drive.google.com/file/d/1tX4wDW3gqQcvN1Qo2QOZb0INdwXLymgS/view?usp=sharing
 
-
+The testing results on dataset SRD is:
+https://drive.google.com/file/d/1deXG9s0RPJut_E-vdTRwhi7QWnHjwoSh/view?usp=sharing
 **More details are coming soon**
 
 ## Bibtex
