@@ -11,7 +11,9 @@ We propose a new method for effective shadow removal by regarding it as an expos
 
 ## Model
 
-We release our model at https://drive.google.com/drive/folders/1riTtYvHpffYu-nqSizqSF4fhbZ2txrp5?usp=sharing
+We release our pretrained model (ISTD+, SRD) at https://drive.google.com/drive/folders/1riTtYvHpffYu-nqSizqSF4fhbZ2txrp5?usp=sharing
+
+pretrained model (ISTD) at https://drive.google.com/drive/folders/1qECA9EjUSLMtUpN5fFZMjltQPzjp2gL9?usp=sharing
 
 Modify the parameter `model` in file `OE_eval.sh` to `Refine` and set `ks=3, n=5, rks=3` to load the model.
 
@@ -47,11 +49,10 @@ The results reported in the paper are calculated by the `matlab` script used in 
 
 - Testing result
 
-The testing results on dataset ISTD+ is:
-https://drive.google.com/file/d/1tX4wDW3gqQcvN1Qo2QOZb0INdwXLymgS/view?usp=sharing
+The testing results on dataset ISTD+, ISTD, SRD are:
+https://drive.google.com/drive/folders/1ubLj5r_ZMzWew4h2bNX7pQL6D62mM-dl?usp=sharing
 
-The testing results on dataset SRD is:
-https://drive.google.com/file/d/1deXG9s0RPJut_E-vdTRwhi7QWnHjwoSh/view?usp=sharing
+
 **More details are coming soon**
 
 ## Bibtex
