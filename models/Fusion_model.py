@@ -195,13 +195,12 @@ class FusionModel(DistangleModel):
         base_shadow_output = shadow_image * base_shadow_param_pred[:, :3].view((n, 3, 1, 1)) + \
                              base_shadow_param_pred[:, 3:].view((n, 3, 1, 1))
         shadow_output_list = []
-        step_length = 0.025
         for i in range(0, self.n - 1):
             if i % 2 == 0:
-                scale = (1 + i // 2) * step_length
+                scale = 1 + i * 0.01
             else:
-                scale = -(1 + i // 2) * step_length
-            shadow_output_list.append(base_shadow_output * (1 + scale))
+                scale = 1 - i * 0.01
+            shadow_output_list.append(base_shadow_output * scale)
         shadow_output = torch.cat([base_shadow_output] + shadow_output_list, axis=1)
         self.lit = torch.cat([base_shadow_output] + shadow_output_list, axis=-1) * 2 - 1
 

@@ -9,6 +9,12 @@ We propose a new method for effective shadow removal by regarding it as an expos
 - ISTD+ https://github.com/cvlab-stonybrook/SID
 - SRD
 
+## Model
+
+We release our model at https://drive.google.com/drive/folders/1riTtYvHpffYu-nqSizqSF4fhbZ2txrp5?usp=sharing
+
+Modify the parameter `model` in file `OE_eval.sh` to `Refine` and set `ks=3, n=5, rks=3` to load the model.
+
 ## Train
 
 Modify the corresponding path in file `OE_train.sh` and run the following script
