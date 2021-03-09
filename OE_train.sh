@@ -13,6 +13,7 @@ datasetmode=expo_param
 batchs=4
 n=5
 ks=7
+rks=3
 version='fixed5-1-loss'
 
 lr_policy=lambda
@@ -51,7 +52,8 @@ CMD="python -u ../SID_train.py --loadSize ${loadSize} \
     --dataset_mode $datasetmode\
     --mask_train $trainmask --optimizer ${optimizer} \
     --n ${n} --ks ${ks} --lr_policy ${lr_policy} --lr_decay_iters ${lr_decay_iters} \
-    --shadow_loss ${shadow_loss} --tv_loss ${tv_loss} --grad_loss ${grad_loss} --pgrad_loss ${pgrad_loss} \
+    --shadow_loss ${shadow_loss} --rks ${rks} --tv_loss ${tv_loss} --grad_loss ${grad_loss} --pgrad_loss ${pgrad_loss} \
+    --load_dir ${load_dir} \
     $OTHER
 "
 echo $CMD
