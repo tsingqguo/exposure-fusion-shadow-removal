@@ -38,7 +38,7 @@ OTHER="--save_epoch_freq 100 --niter 50 --niter_decay 350"
 
 
 trainmask=${dataroot}'/train_NOTUSE'
-CMD="python -u ../SID_eval.py --loadSize ${loadSize} \
+CMD="python -u ../OE_eval.py --loadSize ${loadSize} \
     --randomSize
     --name ${NAME} \
     --dataroot  ${dataroot}\
