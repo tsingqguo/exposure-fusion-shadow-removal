@@ -199,8 +199,8 @@ class RefineModel(DistangleModel):
             else:
                 scale = 1 - i * 0.01
             shadow_output_list.append(base_shadow_output * scale)
-        shadow_output = torch.cat([base_shadow_output] + shadow_output_list, axis=1)
-        self.lit = torch.cat([base_shadow_output] + shadow_output_list, axis=-1) * 2 - 1
+        shadow_output = torch.cat([base_shadow_output] + shadow_output_list, dim=1)
+        self.lit = torch.cat([base_shadow_output] + shadow_output_list, dim=-1) * 2 - 1
 
         shadow_output = shadow_output * 2 - 1
         self.shadow_output = shadow_output
@@ -228,7 +228,7 @@ class RefineModel(DistangleModel):
             iout = torch.sum(iout, dim=1, keepdim=False)
             iout = iout.view((1, 3, h, w))
             output.append(iout)
-        self.final = torch.cat(output, axis=0) * 2 - 1
+        self.final = torch.cat(output, dim=0) * 2 - 1
 
         final_output = self.final.detach()
         final_output.requires_grad = False
@@ -248,7 +248,7 @@ class RefineModel(DistangleModel):
             iout = iout.view((1, 3, h, w))
 
             output.append(iout)
-        self.rfinal = torch.cat(output, axis=0) * 2 - 1
+        self.rfinal = torch.cat(output, dim=0) * 2 - 1
 
     def backward(self):
         # criterion = self.criterionL1
@@ -301,7 +301,7 @@ class RefineModel(DistangleModel):
         gt = self.shadowfree_img
 
         if not eval:
-            img = torch.cat([shadow, ooutput, output, gt], axis=-1)[0, ...]
+            img = torch.cat([shadow, ooutput, output, gt], dim=-1)[0, ...]
             filename = os.path.join(save_dir, self.imname[0])
 
             img = tensor2im(img)

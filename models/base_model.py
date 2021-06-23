@@ -167,13 +167,15 @@ class BaseModel():
             self.__patch_instance_norm_state_dict(state_dict, getattr(module,key), keys, i + 1)
 
     # load models from the disk
-    def load_networks(self, epoch):
+    def load_networks(self, epoch, save_dir=None):
         print(epoch)
+        if save_dir is None:
+            save_dir = self.save_dir
         
         for name in self.model_names:
             if isinstance(name, str):
                 load_filename = '%s_net_%s.pth' % (epoch, name)
-                load_path = os.path.join(self.save_dir, load_filename)
+                load_path = os.path.join(save_dir, load_filename)
                 if self.opt.finetuning:
 
                     load_filename = '%s_net_%s.pth' % (self.opt.finetuning_epoch, name)

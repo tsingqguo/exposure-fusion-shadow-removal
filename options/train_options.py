@@ -29,12 +29,13 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--lr_decay_iters', type=int, default=50, help='multiply by a gamma every lr_decay_iters iterations')
 
         parser.add_argument('--n', type=int, default=3)
-        parser.add_argument('--ks', type=int, default=5)
+        parser.add_argument('--ks', type=int, default=3)
+        parser.add_argument('--rks', type=int, default=3)
         parser.add_argument('--shadow_loss', type=float, default=0.0)
         parser.add_argument('--tv_loss', type=float, default=0.0)
         parser.add_argument('--grad_loss', type=float, default=0.0)
         parser.add_argument('--pgrad_loss', type=float, default=0.0)
-
+        parser.add_argument('--load_dir', type=str, default='')
         parser.add_argument('--optimizer', type=str, default='adam')
 
         self.isTrain = True
