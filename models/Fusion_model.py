@@ -201,8 +201,8 @@ class FusionModel(DistangleModel):
             else:
                 scale = 1 - i * 0.01
             shadow_output_list.append(base_shadow_output * scale)
-        shadow_output = torch.cat([base_shadow_output] + shadow_output_list, axis=1)
-        self.lit = torch.cat([base_shadow_output] + shadow_output_list, axis=-1) * 2 - 1
+        shadow_output = torch.cat([base_shadow_output] + shadow_output_list, dim=1)
+        self.lit = torch.cat([base_shadow_output] + shadow_output_list, dim=-1) * 2 - 1
 
         shadow_output = shadow_output * 2 - 1
         self.shadow_output = shadow_output
@@ -231,7 +231,7 @@ class FusionModel(DistangleModel):
             iout = iout.view((1, 3, h, w))
 
             output.append(iout)
-        self.final = torch.cat(output, axis=0) * 2 -1
+        self.final = torch.cat(output, dim=0) * 2 -1
 
 
     def backward(self):

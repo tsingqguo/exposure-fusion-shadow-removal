@@ -15,7 +15,6 @@ import shutil
 
 import logging
 
-
 opt = TrainOptions().parse()
 
 opt.phase = 'train/train_'
@@ -33,20 +32,21 @@ test_dataset_size = len(test_data_loader)
 
 model = create_model(opt)
 model.setup(opt)
-
+if not opt.load_dir:
+    model.load_networks('latest', opt.load_dir)
 
 # Set logger
 msg = []
 logger = logging.getLogger('%s' % opt.name)
 logger.setLevel(logging.INFO)
 if not os.path.isdir(model.save_dir):
-  msg.append('%s not exist, make it' % model.save_dir)
-  os.mkdir(args.dir)
+    msg.append('%s not exist, make it' % model.save_dir)
+    os.mkdir(args.dir)
 log_file_path = os.path.join(model.save_dir, 'log.log')
 if os.path.isfile(log_file_path):
-  target_path = log_file_path + '.%s' % time.strftime("%Y%m%d%H%M%S")
-  msg.append('Log file exists, backup to %s' % target_path)
-  shutil.move(log_file_path, target_path)
+    target_path = log_file_path + '.%s' % time.strftime("%Y%m%d%H%M%S")
+    msg.append('Log file exists, backup to %s' % target_path)
+    shutil.move(log_file_path, target_path)
 fh = logging.FileHandler(log_file_path)
 fh.setLevel(logging.INFO)
 ch = logging.StreamHandler()
@@ -85,6 +85,7 @@ def calc_RMSE(real_img, fake_img):
     real_lab = rgb2lab(real_img)
     fake_lab = rgb2lab(fake_img)
     return real_lab - fake_lab
+
 
 mse_criterion = nn.MSELoss()
 total_steps = 0
@@ -143,19 +144,18 @@ for epoch in range(opt.epoch_count, opt.niter + opt.niter_decay + 1):
             if i % 20 == 0:
                 model.vis(epoch, i)
 
-        logger.info('[Eval] [Epoch] %d | loss : %.3f | rmse : %.3f | shadow_rmse : %.3f | nonshadow_rmse : %.3f' % 
-              (epoch, eval_loss / len(test_dataset), eval_rmse / len(test_dataset),
-              eval_shadow_rmse / len(test_dataset), eval_nonshadow_rmse / len(test_dataset)))
+        logger.info('[Eval] [Epoch] %d | loss : %.3f | rmse : %.3f | shadow_rmse : %.3f | nonshadow_rmse : %.3f' %
+                    (epoch, eval_loss / len(test_dataset), eval_rmse / len(test_dataset),
+                     eval_shadow_rmse / len(test_dataset), eval_nonshadow_rmse / len(test_dataset)))
 
     if epoch and epoch % 50 == 0 or (epoch == opt.niter + opt.niter_decay):
         logger.info('saving the model at the end of epoch %d, iters %d' %
-              (epoch, total_steps))
+                    (epoch, total_steps))
         model.save_networks('latest')
         model.save_networks(epoch)
 
     spt_time = time.time() - epoch_start_time
     lft_time = (opt.niter + opt.niter_decay - epoch) * spt_time
     logger.info('End of epoch %d / %d | Time Taken: %d sec | eta %.2f' %
-          (epoch, opt.niter + opt.niter_decay, spt_time, lft_time / 3600.0))
+                (epoch, opt.niter + opt.niter_decay, spt_time, lft_time / 3600.0))
     model.update_learning_rate()
-
