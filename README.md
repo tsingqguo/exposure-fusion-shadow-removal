@@ -10,18 +10,26 @@ We propose a new method for effective shadow removal by regarding it as an expos
 - SRD
 
 1. For data folder path (ISTD), train_A: shadow images, train_B: shadow masks, train_C: shadow free images:
+2. 
+```shell
 --ISTD
+   --train
       --train_A
             --1-1.png
       --train_B
             --1-1.png 
       --train_C
             --1-1.png
+      --train_params_fixed  # generate later
+   --test
       --test_A
       --test_B
       --test_C
- 2. Run the code  ./data_processing/compute_params.ipynb for exposure parameters generation. The result will be put in ./ISTD/train_params.
- 3. For testing masks, please run the code ./data_processing/test_mask_generation.py, the result will be put in ./ISTD/test_B.
+      --mask_threshold   # generat later
+ ```
+ 
+ 2. Run the code  `./data_processing/compute_params.ipynb` for exposure parameters generation. The result will be put in `./ISTD/train/train_params`.
+ 3. For testing masks, please run the code `./data_processing/test_mask_generation.py`, the result will be put in `./ISTD/`.
 
 
 ## Pretrained models
