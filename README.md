@@ -29,7 +29,7 @@ We propose a new method for effective shadow removal by regarding it as an expos
           --1-1.png
       --test_C
           --1-1.png
-      --mask_threshold   # generat later
+      --mask_threshold   # generate later
           --1-1.png
  ```
  
