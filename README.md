@@ -1,24 +1,24 @@
 # Auto-exposure fusion for single-image shadow removal
-We propose a new method for effective shadow removal by regarding it as an exposure fusion problem. Please refer to the paper for details: https://arxiv.org/abs/2103.01255
+We propose a new method for effective shadow removal by regarding it as an exposure fusion problem. Please refer to the paper for details: https://arxiv.org/abs/2103.01255 or https://openaccess.thecvf.com/content/CVPR2021/papers/Fu_Auto-Exposure_Fusion_for_Single-Image_Shadow_Removal_CVPR_2021_paper.pdf.
 
 ![Framework](./images/framework.png)
 
 ## Dataset
 
-- ISTD [data](https://github.com/DeepInsight-PCALab/ST-CGAN)
-- ISTD+ [data](https://github.com/cvlab-stonybrook/SID)
+- ISTD [ISTD](https://github.com/DeepInsight-PCALab/ST-CGAN)
+- ISTD+ [ISTD+](https://github.com/cvlab-stonybrook/SID)
 - SRD
 
 1. For data folder path (ISTD), train_A: shadow images, train_B: shadow masks, train_C: shadow free images, organize them as following:
 
 ```shell
---ISTD
+--ISTD+
    --train
       --train_A
           --1-1.png
       --train_B
           --1-1.png 
-      --train_C
+      --train_C_fixed_official 
           --1-1.png
       --train_params_fixed  # generate later
           --1-1.png.txt
@@ -34,7 +34,8 @@ We propose a new method for effective shadow removal by regarding it as an expos
  ```
  
  2. Run the code  `./data_processing/compute_params.ipynb` for exposure parameters generation. 
-    The result will be put in `./ISTD/train/train_params`.
+    The result will be put in `./ISTD/train/train_params_fixed`.
+    Here, names `train_C_fixed_official` and `train_params_fixed` are for ISTD+ dataset, which are consitent with `self.dir_C` and `self.dir_param` in                 `./data/expo_param_dataset.py` .
  3. For testing masks, please run the code `./data_processing/test_mask_generation.py`. 
     The result will be put in `./ISTD/mask_threshold`.
 
@@ -63,7 +64,7 @@ sh OE_train.sh
       model=Refine for RefineNet training.
  ```
  
-   The trained models are saved in `${REPO_PATH}/log/${Name}`, Name are customized for parameters setting.
+   The trained models are saved in `${REPO_PATH}/log/${Name}`, `Name` are customized for parameters setting.
 
 ## Test
 
