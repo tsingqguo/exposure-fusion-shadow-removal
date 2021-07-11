@@ -1,27 +1,43 @@
 # Auto-exposure fusion for single-image shadow removal
-We propose a new method for effective shadow removal by regarding it as an exposure fusion problem. Please refer to the paper for details: https://arxiv.org/abs/2103.01255
+We propose a new method for effective shadow removal by regarding it as an exposure fusion problem. Please refer to the paper for details: https://openaccess.thecvf.com/content/CVPR2021/papers/Fu_Auto-Exposure_Fusion_for_Single-Image_Shadow_Removal_CVPR_2021_paper.pdf.
 
 ![Framework](./images/framework.png)
 
 ## Dataset
 
-- ISTD [data](https://github.com/DeepInsight-PCALab/ST-CGAN)
-- ISTD+ [data](https://github.com/cvlab-stonybrook/SID)
+- ISTD [ISTD](https://github.com/DeepInsight-PCALab/ST-CGAN)
+- ISTD+ [ISTD+](https://github.com/cvlab-stonybrook/SID)
 - SRD
 
-1. For data folder path (ISTD), train_A: shadow images, train_B: shadow masks, train_C: shadow free images:
---ISTD
+1. For data folder path (ISTD), train_A: shadow images, train_B: shadow masks, train_C: shadow free images, organize them as following:
+
+```shell
+--ISTD+
+   --train
       --train_A
-            --1-1.png
+          --1-1.png
       --train_B
-            --1-1.png 
-      --train_C
-            --1-1.png
+          --1-1.png 
+      --train_C_fixed_official 
+          --1-1.png
+      --train_params_fixed  # generate later
+          --1-1.png.txt
+   --test
       --test_A
+          --1-1.png
       --test_B
+          --1-1.png
       --test_C
- 2. Run the code  ./data_processing/compute_params.ipynb for exposure parameters generation. The result will be put in ./ISTD/train_params.
- 3. For testing masks, please run the code ./data_processing/test_mask_generation.py, the result will be put in ./ISTD/test_B.
+          --1-1.png
+      --mask_threshold   # generate later
+          --1-1.png
+ ```
+ 
+ 2. Run the code  `./data_processing/compute_params.ipynb` for exposure parameters generation. 
+    The result will be put in `./ISTD/train/train_params_fixed`.
+    Here, names `train_C_fixed_official` and `train_params_fixed` are for ISTD+ dataset, which are consitent with `self.dir_C` and `self.dir_param` in                 `./data/expo_param_dataset.py` .
+ 3. For testing masks, please run the code `./data_processing/test_mask_generation.py`. 
+    The result will be put in `./ISTD/mask_threshold`.
 
 
 ## Pretrained models
@@ -40,20 +56,26 @@ Modify the corresponding path in file `OE_train.sh` and run the following script
 sh OE_train.sh
 ```
 1. For the parameters:
+```shell
       DATA_PATH=./Datasets/ISTD or your datapath
       n=5, ks=3 for FusionNet,
       n=5, ks=3, rks=3 for RefineNet.
       model=Fusion for FusionNet training,
       model=Refine for RefineNet training.
+ ```
+ 
+   The trained models are saved in `${REPO_PATH}/log/${Name}`, `Name` are customized for parameters setting.
 
 ## Test
 
-In order to test the performance of a trained model, you need to make sure that the hyper parameters in file `OE_eval.sh` match the ones in `OE_train.sh` and run the following script
+In order to test the performance of a trained model, you need to make sure that the hyper parameters in file `OE_eval.sh` match the ones in `OE_train.sh` and run the following script:
 
 ```shell
-sh OE_test.sh
+sh OE_eval.sh
 ```
+1. The pretrained models are located in `${REPO_PATH}/log/${Name}`.
 
+## Evaluation
 The results reported in the paper are calculated by the `matlab` script used in other SOTA, please see [evaluation](https://github.com/cvlab-stonybrook/SID/issues/1) for details. Our evaluation code will print the metrics calculated by `python` code and save the shadow removed result images which will be used by the `matlab` script.
 
 ## Results
