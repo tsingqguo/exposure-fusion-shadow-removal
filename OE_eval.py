@@ -17,16 +17,14 @@ import logging
 
 
 opt = TrainOptions().parse()
-
-opt.phase = 'train/train_'
-opt.serial_batches = False
-train_data_loader = CreateDataLoader(opt)
-train_dataset = train_data_loader.load_data()
-train_dataset_size = len(train_data_loader)
+#train_data_loader = CreateDataLoader(opt)
+#train_dataset = train_data_loader.load_data()
+#train_dataset_size = len(train_data_loader)
 
 opt.phase = 'test/test_'
 opt.batch_size = 1
 opt.serial_batches = True
+opt.isTrain = False
 test_data_loader = CreateDataLoader(opt)
 test_dataset = test_data_loader.load_data()
 test_dataset_size = len(test_data_loader)
@@ -41,7 +39,7 @@ logger = logging.getLogger('%s' % opt.name)
 logger.setLevel(logging.INFO)
 if not os.path.isdir(model.save_dir):
   msg.append('%s not exist, make it' % model.save_dir)
-  os.mkdir(args.dir)
+  os.mkdir(opt.dir)
 log_file_path = os.path.join(model.save_dir, 'log.log')
 if os.path.isfile(log_file_path):
   target_path = log_file_path + '.%s' % time.strftime("%Y%m%d%H%M%S")
@@ -99,20 +97,21 @@ for i, data in enumerate(test_dataset):
     model.set_input(data)
     model.forward()
 
-    diff = calc_RMSE(tensor2im(model.shadowfree_img), tensor2im(model.final))
-    mask = model.shadow_mask.data[0].cpu().float().numpy()[..., None][0, ...]
+    # evaluation refers to matlab code
+    # diff = calc_RMSE(tensor2im(model.shadowfree_img), tensor2im(model.final))
+    # mask = model.shadow_mask.data[0].cpu().float().numpy()[..., None][0, ...]
+    #
+    # if mask.sum() < 2:
+    #     continue
+    # shadow_rmse = np.sqrt(1.0 * (np.power(diff, 2) * mask).sum(axis=(0, 1)) / mask.sum())
+    # nonshadow_rmse = np.sqrt(1.0 * (np.power(diff, 2) * (1 - mask)).sum(axis=(0, 1)) / (1 - mask).sum())
+    # whole_rmse = np.sqrt(np.power(diff, 2).mean(axis=(0, 1)))
+    #
+    # eval_shadow_rmse += shadow_rmse.sum()
+    # eval_nonshadow_rmse += nonshadow_rmse.sum()
+    # eval_rmse += whole_rmse.sum()
 
-    if mask.sum() < 2:
-        continue
-    shadow_rmse = np.sqrt(1.0 * (np.power(diff, 2) * mask).sum(axis=(0, 1)) / mask.sum())
-    nonshadow_rmse = np.sqrt(1.0 * (np.power(diff, 2) * (1 - mask)).sum(axis=(0, 1)) / (1 - mask).sum())
-    whole_rmse = np.sqrt(np.power(diff, 2).mean(axis=(0, 1)))
-
-    eval_shadow_rmse += shadow_rmse.sum()
-    eval_nonshadow_rmse += nonshadow_rmse.sum()
-    eval_rmse += whole_rmse.sum()
-
-    model.zero_grad()
+    model.netR.zero_grad()
 
     model.vis(0, i, opt.name, True)
 

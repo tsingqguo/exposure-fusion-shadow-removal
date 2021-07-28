@@ -165,7 +165,8 @@ class RefineModel(DistangleModel):
         self.input_img = input['A'].to(self.device)
         self.shadow_mask = input['B'].to(self.device)
         self.imname = input['imname']
-        self.shadow_param = input['param'].to(self.device).type(torch.float)
+        if self.isTrain:
+            self.shadow_param = input['param'].to(self.device).type(torch.float)
         self.shadow_mask = (self.shadow_mask > 0.9).type(torch.float)  # * 2 - 1
         self.nim = self.input_img.shape[1]
         self.shadowfree_img = input['C'].to(self.device)
@@ -180,11 +181,6 @@ class RefineModel(DistangleModel):
         n = shadow_param_pred.shape[0]
         w = inputG.shape[2]
         h = inputG.shape[3]
-
-        addgt = self.shadow_param[:, [0, 2, 4]]
-        mulgt = self.shadow_param[:, [1, 3, 5]]
-        addgt = addgt.view(n, 3, 1, 1).expand((n, 3, w, h))
-        mulgt = mulgt.view(n, 3, 1, 1).expand((n, 3, w, h))
 
         base_shadow_param_pred = shadow_param_pred[:, :2 * 3]  # shadow_param_pred.view((n, self.n * 3, 2, 1, 1))
         self.base_shadow_param_pred = base_shadow_param_pred
@@ -204,9 +200,6 @@ class RefineModel(DistangleModel):
 
         shadow_output = shadow_output * 2 - 1
         self.shadow_output = shadow_output
-
-        self.litgt = self.input_img.clone() / 2 + 0.5
-        self.litgt = (self.litgt * mulgt + addgt) * 2 - 1  # [-1, 1]
 
         inputM = torch.cat([self.input_img, shadow_output, self.shadow_mask], 1)
         out = torch.cat([self.input_img, shadow_output], 1)

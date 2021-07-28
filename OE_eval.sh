@@ -5,7 +5,7 @@ REPO_PATH=/home/fulan/shadow_removal/exposure-fusion-shadow-removal
 # DATA_PATH=${MYGIT}/shadow_removal/data/SRD
 # datasetmode=srd
 
-DATA_PATH=/home/fulan/ShadowRemoval/data
+DATA_PATH=./ISTD+
 datasetmode=expo_param
 
 
