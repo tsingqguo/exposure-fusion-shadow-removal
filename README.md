@@ -76,7 +76,7 @@ sh OE_eval.sh
 1. The pretrained models are located in `${REPO_PATH}/log/${Name}`.
 
 ## Evaluation
-The results reported in the paper are calculated by the `matlab` script used in other SOTA, please see [evaluation](https://github.com/cvlab-stonybrook/SID/issues/1) for details. Our evaluation code will print the metrics calculated by `python` code and save the shadow removed result images which will be used by the `matlab` script.
+The results reported in the paper are calculated by the `matlab` script used in other SOTA, please see [evaluation](https://drive.google.com/file/d/1SAMqLy3dSONPgeC5ZQskPoeq60FEx9Vk/view?usp=sharing) for details. Our evaluation code will print the metrics calculated by `python` code and save the shadow removed result images which will be used by the `matlab` script.
 
 ## Results
 
