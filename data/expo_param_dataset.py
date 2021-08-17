@@ -19,13 +19,12 @@ class ExpoParamDataset(BaseDataset):
         self.dir_A = os.path.join(opt.dataroot, opt.phase + 'A')
         # if not opt.use_our_mask:
         if 'test' in opt.phase:
-            self.dir_B = os.path.join(opt.dataroot, 'test', 'mask_threshold')
+            self.dir_B = os.path.join(opt.dataroot, 'test', 'mask_threshold') # for test masks generated
+            self.dir_C = os.path.join(opt.dataroot, opt.phase + 'C')
         else:
             self.dir_B = os.path.join(opt.dataroot, opt.phase + 'B')
-        # else:
-        #     self.dir_B = opt.mask_train
-        print(self.dir_B)
-        self.dir_C = os.path.join(opt.dataroot, opt.phase + 'C_fixed_official')
+            self.dir_C = os.path.join(opt.dataroot, opt.phase + 'C_fixed_official')
+
         self.dir_param = os.path.join(opt.dataroot, opt.phase + 'params_fixed')  # opt.param_path
         print(self.dir_A)
         self.A_paths, self.imname = make_dataset(self.dir_A)
@@ -55,12 +54,12 @@ class ExpoParamDataset(BaseDataset):
             B_path = os.path.join(self.dir_B, imname)
         A_img = Image.open(A_path).convert('RGB')
 
-        # if self.is_train:
-        sparam = open(os.path.join(self.dir_param, imname + '.txt'))
-        line = sparam.read()
-        sparam.close()
-        shadow_param = np.asarray([float(i) for i in line.split(" ") if i.strip()])
-        shadow_param = shadow_param[0:6]
+        if self.is_train:
+            sparam = open(os.path.join(self.dir_param, imname + '.txt'))
+            line = sparam.read()
+            sparam.close()
+            shadow_param = np.asarray([float(i) for i in line.split(" ") if i.strip()])
+            shadow_param = shadow_param[0:6]
 
         ow = A_img.size[0]
         oh = A_img.size[1]
@@ -154,12 +153,13 @@ class ExpoParamDataset(BaseDataset):
         colet['A_paths'] = A_path
         colet['B_baths'] = B_path
 
-        # if the shadow area is too small, let's not change anything:
-        if torch.sum(colet['B'] > 0) < 30:
-            shadow_param = [0, 1, 0, 1, 0, 1]
+        if self.is_train:
+            # if the shadow area is too small, let's not change anything:
+            if torch.sum(colet['B'] > 0) < 30:
+                shadow_param = [0, 1, 0, 1, 0, 1]
 
 
-        colet['param'] = torch.FloatTensor(np.array(shadow_param))
+            colet['param'] = torch.FloatTensor(np.array(shadow_param))
         return colet
 
     def __len__(self):
