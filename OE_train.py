@@ -32,7 +32,8 @@ test_dataset_size = len(test_data_loader)
 
 model = create_model(opt)
 model.setup(opt)
-if not opt.load_dir:
+if opt.load_dir:
+    print('load fusion net from:', opt.load_dir)
     model.load_networks('latest', opt.load_dir)
 
 # Set logger
